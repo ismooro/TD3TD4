@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATS – Exercices Chapitres 3 et 4</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--tx:#1d1d1b;--mu:#6b6a64;--ac:#1d4ed8;--ab:#eef3ff;--bd:#dedcd4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15161a;--card:#1f2127;--tx:#ecebe6;--mu:#9a998f;--ac:#7aa2ff;--ab:#222b45;--bd:#33353d}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:18.5px/1.65 'STIX Two Text','Cambria Math','Latin Modern Math',Georgia,serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{font:600 15px system-ui,sans-serif;margin:0;color:var(--mu)}
+select{font:15px system-ui,sans-serif;padding:6px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.bar{height:4px;background:var(--bd);border-radius:2px;margin-bottom:14px}.bar i{display:block;height:100%;background:var(--ac);border-radius:2px;transition:width .2s}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px}
+.ch{font:13px system-ui,sans-serif;color:var(--mu);margin-bottom:4px}
+h2{margin:0 0 10px;font-size:21px;color:var(--ac)}
+.q,.a{white-space:pre-line}
+.a{margin-top:16px;padding:14px 16px;background:var(--ab);border-left:4px solid var(--ac);border-radius:8px;font-size:16px}
+.a[hidden]{display:none}svg{max-width:100%;height:auto;display:block}.fg{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.nav{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+button{font:600 15px system-ui,sans-serif;padding:10px 16px;border-radius:10px;border:1px solid var(--ac);background:var(--card);color:var(--ac);cursor:pointer}
+button.p{background:var(--ac);color:var(--bg)}button:disabled{opacity:.35;cursor:default}.sp{flex:1}
+.v{display:inline-flex;flex-direction:column;border-left:1px solid;border-right:1px solid;border-radius:5px;padding:0 5px;text-align:center;vertical-align:middle;line-height:1.25}.v i{font-style:normal}
+.s{display:inline-block;border-left:2px solid;padding-left:8px;white-space:pre;vertical-align:middle;line-height:1.35}
+</style></head><body><main>
+<header><h1>ATS · Lycée Diderot · 2026–2027</h1><select id="sel" aria-label="Aller à l’exercice"></select></header>
+<div class="bar"><i id="pg"></i></div>
+<div class="card"><div class="ch" id="ch"></div><h2 id="ti"></h2><div class="q" id="q"></div><div class="a" id="a" hidden></div>
+<div class="nav"><button id="pr">← Précédent</button><span class="sp"></span><button id="sh">Voir la réponse</button><button class="p" id="nx">Suivant →</button></div></div>
+</main>
+<script>
+const V=(...a)=>`<span class=v>${a.map(x=>`<i>${x}</i>`).join("")}</span>`;
+const S=(...a)=>`<span class=s>${a.join("\n")}</span>`;
+const AR=`<defs><marker id=ar viewBox="0 0 10 10" refX=9 refY=5 markerWidth=6 markerHeight=6 orient=auto><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>`;
+const L=(x1,y1,x2,y2,c,d,m)=>`<line x1=${x1} y1=${y1} x2=${x2} y2=${y2} style="stroke:${c};stroke-width:${d?1.2:2}" ${d?'stroke-dasharray="4 3"':''} ${m?'marker-end="url(#ar)"':''}/>`;
+const T=(x,y,t,c="currentColor")=>`<text x=${x} y=${y} style="fill:${c}" font-size=15 font-family='STIX Two Text,Cambria Math,serif' font-style=italic>${t}</text>`;
+const G="#888",A="var(--ac)",O="#d9480f";
+const F412=`<svg viewBox="0 0 250 200" width=340>`+AR+L(10,100,240,100,G)+L(40,190,160,10,G)+L(100,100,180,100,A,0,1)+L(100,100,130,55,A,0,1)+L(100,100,210,55,"currentColor",0,1)+L(100,100,150,145,O,0,1)+L(210,55,180,100,G,1)+L(210,55,130,55,G,1)+L(150,145,180,100,G,1)+L(150,145,70,145,G,1)+T(222,92,"F")+T(164,22,"G")+T(88,116,"O")+T(140,118,"v",A)+T(106,66,"w",A)+T(214,52,"u = v + w")+T(156,160,"s(u) = v − w",O)+`</svg>`;
+const M=(f,n)=>{const a=[2,1],b=f(...a),s=8,X=p=>60+p[0]*s,Y=p=>60-p[1]*s;return `<svg viewBox="0 0 120 120" width=120>`+AR+L(5,60,115,60,G)+L(60,115,60,5,G)+L(60,60,X(a),Y(a),G,0,1)+L(60,60,X(b),Y(b),A,0,1)+T(4,14,n)+`</svg>`};
+const r=Math.sqrt(3)/2;
+const F415=`<div class=fg>`+M((x,y)=>[-x,-y],"f₁")+M((x,y)=>[3*x,3*y],"f₂")+M((x,y)=>[x,-y],"f₃")+M((x,y)=>[-x,y],"f₄")+M((x,y)=>[r*x-y/2,x/2+r*y],"f₅")+`</div>gris : u = (2 ; 1) — bleu : fᵢ(u)`;
+const K=(w,h,ox,oy,s,f)=>{const X=x=>ox+x*s,Y=y=>oy-y*s,g={X,Y,l:(a,b,c,d,m)=>L(X(a[0]),Y(a[1]),X(b[0]),Y(b[1]),c||'currentColor',d,m),p:(q,n,dx=6,dy=-6,c='currentColor')=>`<circle cx=${X(q[0])} cy=${Y(q[1])} r=3 style='fill:${c}'/>`+T(X(q[0])+dx,Y(q[1])+dy,n,c),c:(q,r,c=G)=>`<circle cx=${X(q[0])} cy=${Y(q[1])} r=${r*s} style='fill:none;stroke:${c};stroke-width:2'/>`};return `<svg viewBox='0 0 ${w} ${h}' width=${Math.min(w*1.3,400)}>`+AR+L(0,oy,w,oy,'#bbb')+L(ox,0,ox,h,'#bbb')+f(g)+`</svg>`};
+const F32=K(240,240,120,180,20,g=>g.c([-2,4],3,A)+g.c([-1,2],4,O)+g.c([1,2],1.414,'currentColor')+g.l([0,1],[2,3],'currentColor',1)+g.p([0,1],'A',-14,14)+g.p([2,3],'B')+g.p([-2,4],'Ω₁',5,-4,A)+g.p([-1,2],'Ω₂',-20,16,O)+g.p([1,2],'Ω₃',5,16))+`① bleu · ② orange · ③ noir`;
+const F34=K(240,290,90,160,14,g=>g.l([8,-7],[-4,2])+g.l([-4,2],[-4,9])+g.l([-4,9],[8,-7])+g.c([-2,3],2,A)+g.p([8,-7],'A')+g.p([-4,2],'B',-16,14)+g.p([-4,9],'C',-14,-4)+g.p([-2,3],'I',6,-4,A));
+const F35=K(224,230,56,224,28,g=>g.l([1,1],[3,7])+g.l([3,7],[-1,3])+g.l([-1,3],[1,1])+g.c([2,4],3.162)+g.l([-1,3],[2,4],O,1)+g.p([1,1],'A',6,14)+g.p([3,7],'B')+g.p([-1,3],'C = H',-44,-8)+g.p([1,11/3],'G',-14,-8,O)+g.p([2,4],'Ω',8,-2,A))+`droite d’Euler en pointillés (H, G, Ω)`;
+const F36=K(240,190,120,170,60,g=>{const q=[];for(let x=-1.6;x<=1.61;x+=.1)q.push(g.X(x)+','+g.Y(x*x));return `<polyline points='${q.join(' ')}' style='fill:none;stroke:${A};stroke-width:2'/>`+g.l([-1,1],[1,1])+g.l([1,1],[.5,0])+g.l([.5,0],[-1,1])+g.l([.5,0],[.5,.25],O,1)+g.l([1,1],[.5,.25],O,1)+g.p([-1,1],'A',-14,-8)+g.p([1,1],'B')+g.p([.5,0],'M',-4,16)+g.p([.5,.25],'H',-16,-4,O)+T(g.X(1.2),g.Y(1.75),'y = x²',A)});
+const F37=K(190,225,25,200,42,g=>g.l([1,1],[3,0])+g.l([3,0],[3,3])+g.l([3,3],[1,4])+g.l([1,4],[1,1])+g.l([3,3],[1,3],O,1)+g.p([1,1],'A',-14,14)+g.p([3,0],'B',6,14)+g.p([3,3],'C')+g.p([1,4],'D',-14,-4)+T(g.X(2)-14,g.Y(3)-6,'d = 2',O));
+const F310=`<svg viewBox='0 0 240 130' width=320>`+AR+`<circle cx=80 cy=65 r=60 style='fill:none;stroke:#888;stroke-width:2'/>`+L(92,5,92,125,A)+L(140,5,140,125,O)+L(80,65,140,65,O,0,1)+`<circle cx=80 cy=65 r=3 style='fill:currentColor'/>`+T(66,60,'A')+T(96,18,'𝒫₁',A)+T(144,18,'𝒫₂',O)+T(100,82,'d = 3',O)+`</svg>`;
+const F43=`<svg viewBox='0 0 240 200' width=320>`+AR+`<polygon points='30,150 170,150 215,95 75,95' style='fill:var(--ab);stroke:#888;stroke-width:1.5'/>`+L(99,190,155,23,G)+`<circle cx=122 cy=122 r=3 style='fill:currentColor'/>`+T(40,142,'F')+T(160,30,'G')+T(110,140,'0')+T(70,190,'F ⊕ G = ℝ³')+`</svg>`;
+const F49=`<svg viewBox='0 0 250 200' width=340>`+AR+L(10,100,240,100,G)+L(40,190,160,10,G)+L(100,100,180,100,A,0,1)+L(100,100,130,55,A,0,1)+L(100,100,210,55,'currentColor',0,1)+L(210,55,180,100,G,1)+L(210,55,130,55,G,1)+T(222,92,'F')+T(164,22,'G')+T(88,116,'O')+T(130,118,'v = p(u)',A)+T(104,66,'w',A)+T(214,52,'u')+`</svg>`;
+const C3="Chapitre 3 : Géométrie du plan et de l’espace",C4="Chapitre 4 : Espaces vectoriels";
+const E=[
+[C3,"3.1",`Déterminer une équation cartésienne et un système d’équations paramétriques des droites suivantes :
+1. la droite (AB), avec A(4 ; −1) et B(0 ; 3).
+2. la droite passant par C(1 ; 2) et dirigée par u⃗ = ${V(4,1)}
+3. la droite passant par D(2 ; 3) et de vecteur normal n = ${V(2,-1)}
+4. la droite passant par E(1 ; 2) et parallèle à (FG), avec F(3 ; 2) et G(1 ; −4).
+5. la médiatrice de [AB], avec A(2 ; 1) et B(−4 ; −7).`,
+`1. AB⃗ = (−4 ; 4) ∥ (−1 ; 1).  Paramétrique : x = 4 − t, y = −1 + t.
+M ∈ (AB) ⇔ det(AM⃗, AB⃗) = 0 ⇔ 4(x−4) + 4(y+1) = 0 ⇔ x + y − 3 = 0.
+2. Paramétrique : x = 1 + 4t, y = 2 + t. Avec t = y − 2 : x = 1 + 4(y−2) ⇔ x − 4y + 7 = 0.
+3. n(2 ; −1) ⇒ 2x − y + c = 0 ; D ∈ droite ⇒ 4 − 3 + c = 0 ⇒ c = −1 : 2x − y − 1 = 0.
+Vecteur directeur (1 ; 2) (orthogonal à n) : x = 2 + t, y = 3 + 2t.
+4. FG⃗ = (−2 ; −6) ∥ (1 ; 3). Paramétrique : x = 1 + t, y = 2 + 3t.
+3(x−1) − (y−2) = 0 ⇔ 3x − y − 1 = 0.
+5. Milieu I(−1 ; −3), AB⃗ = (−6 ; −8) ∥ n(3 ; 4) :
+3(x+1) + 4(y+3) = 0 ⇔ 3x + 4y + 15 = 0.
+Directeur (−4 ; 3) : x = −1 − 4t, y = −3 + 3t.`],
+[C3,"3.2",`Déterminer une équation cartésienne, ainsi que le centre et le rayon des cercles suivants :
+1. le cercle d’équation cartésienne x² + y² + 4x − 8y + 11 = 0.
+2. le cercle de centre Ω(−1 ; 2) et de rayon 4.
+3. le cercle de diamètre [AB], avec A(0 ; 1) et B(2 ; 3).`,
+`1. (x+2)² − 4 + (y−4)² − 16 + 11 = 0 ⇔ (x+2)² + (y−4)² = 9. Centre Ω(−2 ; 4), rayon 3.
+2. (x+1)² + (y−2)² = 16 ⇔ x² + y² + 2x − 4y − 11 = 0.
+3. M ∈ cercle ⇔ MA⃗·MB⃗ = 0 ⇔ x(x−2) + (y−1)(y−3) = 0 ⇔ x² + y² − 2x − 4y + 3 = 0
+⇔ (x−1)² + (y−2)² = 2. Centre Ω(1 ; 2), rayon √2.
+${F32}`],
+[C3,"3.3",`Soient A(0 ; 1), B(2 ; 3) et C(−4 ; −12). Déterminer une équation du cercle circonscrit au triangle ABC.`,
+`Cercle : x² + y² + ax + by + c = 0.
+A : b + c = −1   B : 2a + 3b + c = −13   C : −4a − 12b + c = −160.
+c = −1 − b ⇒ a + b = −6 et −4a − 13b = −159.
+a = −6 − b ⇒ 24 − 9b = −159 ⇒ b = 61/3, a = −79/3, c = −64/3.
+Équation : x² + y² − (79/3)x + (61/3)y − 64/3 = 0 ⇔ 3x² + 3y² − 79x + 61y − 64 = 0.`],
+[C3,"3.4",`Soient A(8 ; −7), B(−4 ; 2) et C(−4 ; 9). Déterminer une équation du cercle inscrit au triangle ABC.`,
+`a = BC = 7, b = AC = √(144+256) = 20, c = AB = √(144+81) = 15.
+Centre I = barycentre de (A,a), (B,b), (C,c) :
+x = (56 − 80 − 60)/42 = −2, y = (−49 + 40 + 135)/42 = 3. I(−2 ; 3).
+Demi-périmètre p = 21, Héron : S = √(21·14·1·6) = 42, r = S/p = 2.
+Équation : (x+2)² + (y−3)² = 4 ⇔ x² + y² + 4x − 6y + 9 = 0.
+${F34}`],
+[C3,"3.5",`Soient A(1 ; 1), B(3 ; 7) et C(−1 ; 3). Déterminer les coordonnées du centre de gravité, de l’orthocentre et du centre du cercle circonscrit au triangle ABC. Vérifier que ces trois points sont alignés.`,
+`Centre de gravité : G = ((1+3−1)/3 ; (1+7+3)/3) = (1 ; 11/3).
+Orthocentre : BC⃗ = (−4 ; −4) ⇒ hauteur issue de A : x + y − 2 = 0.
+AC⃗ = (−2 ; 2) ⇒ hauteur issue de B : −x + y − 4 = 0. Intersection : y = 3, x = −1. H(−1 ; 3).
+(AC⃗·BC⃗ = 8 − 8 = 0 : triangle rectangle en C, donc H = C.)
+Cercle circonscrit : centre = milieu de l’hypoténuse [AB] : Ω(2 ; 4).
+Alignement : GH⃗ = (−2 ; −2/3), GΩ⃗ = (1 ; 1/3), donc GH⃗ = −2 GΩ⃗ : G, H, Ω alignés (droite d’Euler).
+${F35}`],
+[C3,"3.6",`(Construction d’une parabole). Soient les points A(−1 ; 1) et B(1 ; 1). On note M(t ; 0) un point de l’axe des abscisses (t ∈ ℝ) et H l’orthocentre du triangle BAM.
+Déterminer une équation du lieu ℒ parcouru par H lorsque M décrit l’axe des abscisses. Reconnaître ℒ.`,
+`(AB) est la droite y = 1 : la hauteur issue de M est verticale : x = t.
+AM⃗ = (t+1 ; −1) : hauteur issue de B : (t+1)(x−1) − (y−1) = 0.
+Avec t = x : (x+1)(x−1) − (y−1) = 0 ⇔ y = x².
+ℒ est la parabole d’équation y = x².
+${F36}`],
+[C3,"3.7",`Soient A(1 ; 1), B(3 ; 0) et C(3 ; 3). Déterminer les coordonnées du point D tel que ABCD est un parallélogramme.
+Calculer l’aire du parallélogramme, et la distance de C à la droite (AD).`,
+`ABCD parallélogramme ⇔ AB⃗ = DC⃗. AB⃗ = (2 ; −1) : 3 − x_D = 2, 3 − y_D = −1 ⇒ D(1 ; 4).
+Aire = |det(AB⃗, AD⃗)| avec AD⃗ = (0 ; 3) : 2·3 − (−1)·0 = 6.
+Aire = AD × d(C,(AD)) ⇒ d(C,(AD)) = 6/3 = 2.
+${F37}`],
+[C3,"3.8",`(Équations cartésiennes de plan). On munit l’espace d’un repère orthonormé (O ; i ; j ; k). Déterminer une équation cartésienne de chacun des plans suivant :
+1. (ABC) où A(1 ; 2 ; 3), B(0 ; 1 ; −2) et C(2 ; 1 ; 2).
+2. plan médiateur du segment [AB], où A(1 ; 2 ; 3) et B(2 ; 1 ; −1).
+3. passant par A(−1 ; 2 ; 3) et de vecteurs directeurs u₁ = ${V(1,1,1)} et v₁ = ${V(0,1,4)}
+4. passant par A(2 ; 1 ; 3) et parallèle au plan d’équation 2x + 3y + 4z − 18 = 0.
+5. passant par A(1 ; 2 ; 3) et orthogonal à u₂ = ${V(3,2,1)}
+6. de systèmes d’équations paramétriques ${S("x = 2 + s + 2t","y = 2 + 2s + t","z = 1 − s − t")}  (t, s) ∈ ℝ²
+7. contenant la droite (d) et parallèle à (d₀) avec
+(d) : ${S("3x − y + z = 1","x − 4y + z = 2")}  et (d₀) : ${S("x + y + z = 4","2x − y + z = 2")}`,
+`1. AB⃗ = (−1 ; −1 ; −5), AC⃗ = (1 ; −1 ; −1) ; AB⃗ ∧ AC⃗ = (−4 ; −6 ; 2) ∥ n(2 ; 3 ; −1).
+2(x−1) + 3(y−2) − (z−3) = 0 ⇔ 2x + 3y − z − 5 = 0.
+2. I(3/2 ; 3/2 ; 1), n = AB⃗ = (1 ; −1 ; −4) : (x−3/2) − (y−3/2) − 4(z−1) = 0 ⇔ x − y − 4z + 4 = 0.
+3. n = u₁ ∧ v₁ = (3 ; −4 ; 1) : 3(x+1) − 4(y−2) + (z−3) = 0 ⇔ 3x − 4y + z + 8 = 0.
+4. Même normale (2 ; 3 ; 4) : 2(x−2) + 3(y−1) + 4(z−3) = 0 ⇔ 2x + 3y + 4z − 19 = 0.
+5. n = u₂ : 3(x−1) + 2(y−2) + (z−3) = 0 ⇔ 3x + 2y + z − 10 = 0.
+6. Point (2 ; 2 ; 1), u = (1 ; 2 ; −1), v = (2 ; 1 ; −1) ; u ∧ v = (−1 ; −1 ; −3) ∥ (1 ; 1 ; 3).
+(x−2) + (y−2) + 3(z−1) = 0 ⇔ x + y + 3z − 7 = 0.
+7. Direction de (d) : (3 ; −1 ; 1) ∧ (1 ; −4 ; 1) = (3 ; −2 ; −11).
+Direction de (d₀) : (1 ; 1 ; 1) ∧ (2 ; −1 ; 1) = (2 ; 1 ; −3).
+Normale : (3 ; −2 ; −11) ∧ (2 ; 1 ; −3) = (17 ; −13 ; 7).
+Point de (d) (z = 0) : 3x − y = 1, x − 4y = 2 ⇒ A(2/11 ; −5/11 ; 0).
+17x − 13y + 7z − (34+65)/11 = 0 ⇔ 17x − 13y + 7z − 9 = 0.`],
+[C3,"3.9",`Déterminer une équation d’un plan parallèle à (Ox), d’un plan parallèle à (Oy) et d’un plan parallèle à (Oz)`,
+`Un plan ax + by + cz + d = 0 est parallèle à (Oz) ⇔ n·(0 ; 0 ; 1) = 0 ⇔ c = 0.
+Parallèle à (Oz) : ax + by + d = 0 ((a,b) ≠ (0,0)), par exemple x + y = 1.
+Parallèle à (Oy) : ax + cz + d = 0, par exemple x + z = 1.
+Parallèle à (Ox) : by + cz + d = 0, par exemple y + z = 1.`],
+[C3,"3.10",`Déterminer la nature des intersections suivantes :
+1. de la sphère S de centre A(1 ; −3 ; 1) et de rayon 3, avec le plan 𝒫₁ : x + y − 3z = −3 et avec le plan 𝒫₂ : 2x − y + 2z + 2 = 0.
+2. de la sphère de centre O et de rayon 2, et la droite D, dirigée par u = ${V(1,1,1)} passant par A(1 ; 2 ; 0).
+3. des droites (d) et (d₀), dont un système d’équations paramétriques est donné par :
+(d) : ${S("x = 4 + t","y = 6 + 2t","z = 4 − t")} t ∈ ℝ  et (d₀) : ${S("x = 8 + 5t","y = 2 − 2t","z = 6 + t")} t ∈ ℝ`,
+`1. 𝒫₁ : x + y − 3z + 3 = 0, d(A,𝒫₁) = |1 − 3 − 3 + 3|/√11 = 2/√11 &lt; 3 ⇒ cercle de rayon √(9 − 4/11) = √(95/11).
+𝒫₂ : d(A,𝒫₂) = |2 + 3 + 2 + 2|/3 = 3 = R ⇒ plan tangent à S, intersection = un point (ici H(−1 ; −2 ; −1)).
+Coupe par un plan orthogonal à 𝒫₁ et 𝒫₂ passant par A (les plans sont vus de profil) :
+${F310}
+2. D : x = 1 + t, y = 2 + t, z = t. x² + y² + z² = 4 ⇔ (1+t)² + (2+t)² + t² = 4 ⇔ 3t² + 6t + 1 = 0.
+Δ = 36 − 12 = 24 &gt; 0 : deux points distincts (t = −1 ± √6/3).
+3. (d) paramètre t, (d₀) paramètre s : 4 + t = 8 + 5s ; 6 + 2t = 2 − 2s ; 4 − t = 6 + s.
+(1)+(3) : 8 = 14 + 6s ⇒ s = −1, puis t = −1 ; (2) : 4 = 4 ✓.
+Les droites sont sécantes au point I(3 ; 4 ; 5).`],
+[C3,"3.11",`Soient 𝒫₁ : 2x − 4y + 1 = 0 et 𝒫₂ : 6x − 2y − 3z + 2 = 0. Déterminer l’ensemble des points équidistants des plans P₁ et P₂.`,
+`d(M,𝒫₁) = d(M,𝒫₂) ⇔ |2x − 4y + 1|/√20 = |6x − 2y − 3z + 2|/7.
+C’est la réunion de deux plans bissecteurs :
+7(2x − 4y + 1) = √20 (6x − 2y − 3z + 2)  et  7(2x − 4y + 1) = −√20 (6x − 2y − 3z + 2).`],
+[C3,"3.12",`Déterminer le centre et le rayon de la sphère d’équation cartésienne x² + y² + z² − 2x + 4y + 2z − 9 = 0.`,
+`(x−1)² − 1 + (y+2)² − 4 + (z+1)² − 1 − 9 = 0 ⇔ (x−1)² + (y+2)² + (z+1)² = 15.
+Centre Ω(1 ; −2 ; −1), rayon √15.`],
+[C3,"3.13",`Soit (e₁, e₂, e₃) une base orthonormée directe d’un espace euclidien orienté E de dimension 3. Matrice de la rotation d’angle π/3 autour de e₁ + e₂.`,
+`Axe unitaire w = (e₁+e₂)/√2. Rodrigues : R(x) = cosθ·x + (1−cosθ)(x·w)w + sinθ·(w ∧ x), cos = 1/2, sin = √3/2.
+R(e₁) = (3/4 ; 1/4 ; −√6/4)   R(e₂) = (1/4 ; 3/4 ; √6/4)   R(e₃) = (√6/4 ; −√6/4 ; 1/2)
+Matrice dans (e₁, e₂, e₃) :
+${S("⎡  3/4     1/4     √6/4 ⎤","⎢  1/4     3/4    −√6/4 ⎥","⎣ −√6/4   √6/4    1/2  ⎦")}`],
+[C4,"4.2",`Montrer que F = {(x, y, z) ∈ ℝ³ ∣ x − y − z = 0} est un sous-espace vectoriel de ℝ³ et donnant un système engendrant F.`,
+`• (0,0,0) ∈ F.
+• u, v ∈ F, λ, μ ∈ ℝ : (λx+μx′) − (λy+μy′) − (λz+μz′) = λ·0 + μ·0 = 0 ⇒ λu + μv ∈ F. F est un sev.
+• x = y + z ⇒ (x,y,z) = y(1,1,0) + z(1,0,1). Donc F = Vect((1,1,0), (1,0,1)) : c’est un système générateur.`],
+[C4,"4.3",`Est-ce que les sous-espaces vectoriels F et G de ℝ³ définis par F = {(x, y, z) ∈ ℝ³ ∣ x − y − z = 0} et G = {(x, y, z) ∈ ℝ³ ∣ y = z = 0} sont supplémentaires dans ℝ³ ?`,
+`F ∩ G : y = z = 0 et x − y − z = 0 ⇒ (x,y,z) = (0,0,0). Donc F ∩ G = {0}.
+dim F = 2, dim G = 1 (base (1,0,0)) ⇒ dim(F+G) = 3 = dim ℝ³.
+Donc F ⊕ G = ℝ³ : oui, F et G sont supplémentaires.
+Schéma (F plan, G droite) :
+${F43}`],
+[C4,"4.4",`Soient dans ℝ³ les vecteurs v⃗₁(1, 1, 0), v⃗₂(4, 1, 4) et v⃗₃(2, −1, 4).
+1. Montrer que v⃗₁ et v⃗₂ ne sont pas colinéaires. Faire de même avec v⃗₁ et v⃗₃, puis avec v⃗₂ et v⃗₃.
+2. La famille (v⃗₁, v⃗₂, v⃗₃) est-elle libre ?`,
+`1. v₁ a z = 0 alors que v₂ et v₃ ont z = 4 ≠ 0 : v₁ n’est colinéaire ni à v₂ ni à v₃.
+Si v₂ = kv₃ : z ⇒ k = 1, mais x ⇒ 4 = 2k ⇒ k = 2 : contradiction. Pas colinéaires.
+2. det(v₁,v₂,v₃) = 1·(4+4) − 1·(16−8) + 0 = 0 : la famille est liée.
+(Relation : v₃ = −2v₁ + v₂.)`],
+[C4,"4.5",`Les familles suivantes sont-elles libres ?
+1. v⃗₁(1, 0, 1), v⃗₂(0, 2, 2) et v⃗₃(3, 7, 1) dans ℝ³.
+2. v⃗₁(1, 0, 0), v⃗₂(0, 1, 1) et v⃗₃(1, 1, 1) dans ℝ³.
+3. v⃗₁(1, 2, 1, 2, 1), v⃗₂(2, 1, 2, 1, 2), v⃗₃(1, 0, 1, 1, 0) et v⃗₄(0, 1, 0, 0, 1) dans ℝ⁵.
+4. v⃗₁(2, 4, 3, −1, −2, 1), v⃗₂(1, 1, 2, 1, 3, 1) et v⃗₃(0, −1, 0, 3, 6, 2) dans ℝ⁶.
+5. v⃗₁(2, 1, 3, −1, 4, −1), v⃗₂(−1, 1, −2, 2, −3, 3) et v⃗₃(1, 5, 0, 4, −1, 7) dans ℝ⁶.`,
+`1. det = 1·(2−14) − 0 + 3·(0−2) = −18 ≠ 0 : libre.
+2. det = 0, et v₃ = v₁ + v₂ : liée.
+3. v₁ + v₂ = (3,3,3,3,3) = 3v₃ + 3v₄, donc v₁ + v₂ − 3v₃ − 3v₄ = 0 : liée.
+4. Extrait sur les composantes 1, 3, 6 : det[[2,1,0],[3,2,0],[1,1,2]] = 2·(4−3) = 2 ≠ 0 : libre.
+5. 2v₁ + 3v₂ = (1,5,0,4,−1,7) = v₃ : liée.`],
+[C4,"4.6",`On considère dans ℝⁿ une famille de 4 vecteurs linéairement indépendants : (e⃗₁, e⃗₂, e⃗₃, e⃗₄). Les familles suivantes sont-elles libres ?
+1. (e⃗₁, 2e⃗₂, e⃗₃).
+2. (e⃗₁, e⃗₃).
+3. (e⃗₁, 2e⃗₁ + e⃗₄, e⃗₄).
+4. (3e⃗₁ + e⃗₃, e⃗₃, e⃗₂ + e⃗₃).
+5. (2e⃗₁ + e⃗₂, e⃗₁ − 3e⃗₂, e⃗₄, e⃗₂ − e⃗₁).`,
+`1. Libre (sous-famille de la famille libre, un vecteur multiplié par 2 ≠ 0).
+2. Libre (sous-famille d’une famille libre).
+3. Liée : 2e₁ + e₄ − (2e₁ + e₄) = 0, c’est-à-dire 2·e₁ + 1·e₄ − 1·(2e₁ + e₄) = 0.
+4. a(3e₁+e₃) + b e₃ + c(e₂+e₃) = 3a e₁ + c e₂ + (a+b+c) e₃ = 0 ⇒ a = c = 0, puis b = 0 : libre.
+5. u₁ = 2e₁+e₂, u₂ = e₁−3e₂, u₄ = e₂−e₁ sont dans Vect(e₁, e₂) (dimension 2) : liée.
+Explicitement : 2u₁ + 3u₂ + 7u₄ = 0.`],
+[C4,"4.7",`Dans ℱ(ℝ, ℝ), les trois fonctions x ↦ sin x, x ↦ sin 2x, x ↦ sin 3x, sont-elles linéairement indépendantes ? Généraliser.`,
+`Soit a sin x + b sin 2x + c sin 3x = 0 pour tout x.
+x = π/2 : a − c = 0 ⇒ a = c.
+Dérivée en x = 0 : a + 2b + 3c = 0 ⇒ 4a + 2b = 0 ⇒ b = −2a.
+x = π/4 : (√2/2)(a + c) + b = 0 ⇒ √2·a + b = 0 ⇒ b = −√2·a.
+Donc −2a = −√2·a ⇒ a = 0, puis b = c = 0. La famille est libre.
+Généralisation : (x ↦ sin(nx)), 1 ≤ n ≤ N, est libre (par exemple par orthogonalité : ∫₀^π sin(nx) sin(mx) dx = 0 si n ≠ m).`],
+[C4,"4.8",`Dans le ℝ-espace vectoriel ℱ(ℝ, ℝ) des fonctions de ℝ dans ℝ, on considère le sous-espace vectoriel des fonctions paires 𝒫 et le sous-espace vectoriel des fonctions impaires ℐ. Montrons que 𝒫 ⊕ ℐ = ℱ(ℝ, ℝ).`,
+`• 𝒫 ∩ ℐ = {0} : f paire et impaire ⇒ f(x) = f(−x) = −f(x) ⇒ f = 0.
+• 𝒫 + ℐ = ℱ(ℝ, ℝ) : f = p + i avec p(x) = (f(x)+f(−x))/2 (paire) et i(x) = (f(x)−f(−x))/2 (impaire).
+Donc 𝒫 ⊕ ℐ = ℱ(ℝ, ℝ).`],
+[C4,"4.9",`(Projection). Soient E un 𝕂-espace vectoriel et F et G deux sous-espaces vectoriels tels que E = F ⊕ G.
+Tout vecteur u de E s’écrivant de façon unique u = v + w avec v ∈ F et w ∈ G, la projection sur F parallèlement à G est definie par
+p : E ⟶ E,  u = v + w ⟼ v
+• p est une application linéaire.
+• p vérifie l’égalité p² = p.`,
+`• Linéaire : u₁ = v₁ + w₁, u₂ = v₂ + w₂ ⇒ λu₁ + μu₂ = (λv₁ + μv₂) + (λw₁ + μw₂) avec (λv₁+μv₂) ∈ F, (λw₁+μw₂) ∈ G.
+Par unicité de la décomposition, p(λu₁ + μu₂) = λv₁ + μv₂ = λp(u₁) + μp(u₂).
+• p² = p : p(u) = v = v + 0 (v ∈ F, 0 ∈ G) ⇒ p(p(u)) = v = p(u).
+Schéma : p projette u sur F parallèlement à G.
+${F49}`],
+[C4,"4.10",`Soit f : ℝ³ ⟶ ℝ³ définie par f(x, y, z) = (−x, y + z, 2z). Montrer que f est une application linéaire. Calculer Ker(f) et Im(f). f admet-elle un inverse ? Même question avec f(x, y, z) = (x − y, x + y, y).`,
+`Première application : linéaire (chaque coordonnée est combinaison linéaire de x, y, z).
+Ker : −x = 0, y + z = 0, 2z = 0 ⇒ Ker(f) = {0}. Rang : dim Im(f) = 3 ⇒ Im(f) = ℝ³.
+f est bijective, f⁻¹(u, v, w) = (−u, v − w/2, w/2).
+Seconde application : linéaire.
+Ker : x − y = 0, x + y = 0, y = 0 ⇒ x = y = 0, z libre : Ker(f) = Vect((0,0,1)).
+dim Im(f) = 3 − 1 = 2 : Im(f) = Vect((1,1,0), (−1,1,1)). Ker ≠ {0} : f n’est pas inversible.`],
+[C4,"4.11",`Dans le ℝ-espace vectoriel ℱ(ℝ, ℝ) des fonctions de ℝ dans ℝ, on considère la famille {cos, sin}. Montrer que c’est une famille libre. Montrer que la famille {cos², sin², 1} est liée.`,
+`a cos x + b sin x = 0 ∀x : x = 0 ⇒ a = 0 ; x = π/2 ⇒ b = 0. {cos, sin} est libre.
+cos² + sin² − 1 = 0 : combinaison non triviale nulle, donc {cos², sin², 1} est liée.`],
+[C4,"4.12",`Soient E un espace vectoriel, et F, G deux sous-espaces tels que E = F ⊕ G. Chaque u ∈ E se décompose de manière unique u = v + w avec v ∈ F, w ∈ G. La symétrie par rapport à F parallèlement à G est l’application s : E ⟶ E définie par s(u) = v − w. Faire un dessin.
+Montrer que s est une application linéaire.
+Montrer que s² = id_E. Calculer Ker(s) et Im(s). s admet-elle un inverse ?`,
+`Linéarité : s(λu₁ + μu₂) = (λv₁ + μv₂) − (λw₁ + μw₂) = λs(u₁) + μs(u₂).
+s²(u) = s(v − w) = v + w = u ⇒ s² = id_E.
+Donc s est bijective, s⁻¹ = s, Ker(s) = {0} et Im(s) = E.
+Dessin (dans ℝ², F = droite horizontale, G = droite oblique) :
+${F412}`],
+[C4,"4.13",`Soit f : ℝₙ[X] ⟶ ℝₙ[X] définie par P(X) ↦ P″(X) (où P″ désigne la dérivée seconde).
+Montrer que f est une application linéaire. Calculer Ker(f) et Im(f). f admet-elle un inverse ?`,
+`(λP + μQ)″ = λP″ + μQ″ : f est linéaire.
+Ker(f) : P″ = 0 ⇔ deg P ≤ 1 : Ker(f) = ℝ₁[X] = Vect(1, X).
+Im(f) = ℝₙ₋₂[X] (la dérivée seconde fait baisser le degré de 2).
+Ker(f) ≠ {0} (n ≥ 1) : f n’est pas inversible.`],
+[C4,"4.14",`Les applications suivantes sont-elles linéaires ?
+1. ℝ ⟶ ℝ, x ⟼ 3x − 2
+2. ℝ⁴ ⟶ ℝ, (x, y, x′, y′) ⟼ x·x′ + y·y′
+3. 𝒞⁰(ℝ, ℝ) ⟶ ℝ, f ⟼ f(1)
+4. 𝒞¹(ℝ, ℝ) ⟶ 𝒞⁰(ℝ, ℝ), f ⟼ f′ + f
+5. 𝒞⁰([0, 1], ℝ) ⟶ ℝ, f ⟼ ∫₀¹ |f(t)| dt
+6. 𝒞⁰([0, 1], ℝ) ⟶ ℝ, f ⟼ max_{x∈[0,1]} f(x)
+7. ℝ₃[X] ⟶ ℝ₃[X], P(X) ⟼ P(X + 1) − P(0)`,
+`1. Non : f(0) = −2 ≠ 0.
+2. Non : termes quadratiques, f(2u) = 4f(u).
+3. Oui (évaluation en un point).
+4. Oui (f ↦ f′ et f ↦ f sont linéaires).
+5. Non : avec λ = −1, ∫|−f| = ∫|f| ≠ −∫|f| (si f ≠ 0).
+6. Non : avec f(x) = x, max f = 1 mais max(−f) = 0 ≠ −1.
+7. Oui : P ↦ P(X+1) est linéaire et P ↦ P(0) (polynôme constant) aussi, donc leur différence l’est.`],
+[C4,"4.15",`Montrer que les applications suivantes fᵢ : ℝ² ⟶ ℝ² sont linéaires. Caractériser géométriquement ces applications et faire un dessin.
+1. f₁(x, y) = (−x, −y) ;
+2. f₂(x, y) = (3x, 3y) ;
+3. f₃(x, y) = (x, −y) ;
+4. f₄(x, y) = (−x, y) ;
+5. f₅(x, y) = (√3/2·x − 1/2·y, 1/2·x + √3/2·y).`,
+`Toutes sont linéaires (coordonnées combinaisons linéaires de x et y).
+1. Symétrie centrale de centre O (rotation d’angle π).
+2. Homothétie de centre O et de rapport 3.
+3. Symétrie orthogonale par rapport à l’axe (Ox).
+4. Symétrie orthogonale par rapport à l’axe (Oy).
+5. Rotation de centre O et d’angle π/6 (cos π/6 = √3/2, sin π/6 = 1/2).
+Dessin : image du vecteur u = (2 ; 1) par chaque application.
+${F415}`],
+[C4,"4.16",`Soit (e₁, …, eₙ) une base d’un espace vectoriel E. Notez que l’application
+φ : 𝕂ⁿ ⟶ E,  (λ₁, λ₂, …, λₙ) ↦ λ₁v₁ + λ₂v₂ + ⋯ + λₙvₙ
+est un isomorphisme de l’espace vectoriel 𝕂ⁿ vers l’espace vectoriel E.`,
+`• Linéaire : φ(λX + μY) = Σ(λxᵢ + μyᵢ)eᵢ = λφ(X) + μφ(Y).
+• Injective : φ(X) = 0 ⇒ Σxᵢeᵢ = 0 ⇒ tous les xᵢ = 0 (famille libre) ⇒ Ker φ = {0}.
+• Surjective : tout v ∈ E s’écrit v = Σcᵢeᵢ = φ(c₁, …, cₙ) (famille génératrice).
+φ est linéaire et bijective : c’est un isomorphisme de 𝕂ⁿ sur E.`]
+];
+const $=id=>document.getElementById(id);let i=0,sel=$("sel");
+E.forEach((e,k)=>sel.add(new Option("Exercice "+e[1],k)));
+function show(n){i=n;const e=E[i];$("ch").textContent=e[0];$("ti").textContent="Exercice "+e[1]+".";$("q").innerHTML=e[2];
+const a=$("a");a.innerHTML=e[3];a.hidden=true;$("sh").textContent="Voir la réponse";
+$("pr").disabled=i==0;$("nx").disabled=i==E.length-1;sel.value=i;$("pg").style.width=((i+1)/E.length*100)+"%";
+try{location.hash="e"+e[1].replace(".","-")}catch(x){}window.scrollTo(0,0)}
+$("sh").onclick=()=>{const a=$("a");a.hidden=!a.hidden;$("sh").textContent=a.hidden?"Voir la réponse":"Masquer la réponse"};
+$("nx").onclick=()=>i<E.length-1&&show(i+1);$("pr").onclick=()=>i>0&&show(i-1);sel.onchange=()=>show(+sel.value);
+document.onkeydown=e=>{if(e.key=="ArrowRight")$("nx").click();if(e.key=="ArrowLeft")$("pr").click()};
+let h=(location.hash||"").match(/^#e(\d)-(\d+)$/),s=h?E.findIndex(e=>e[1]==h[1]+"."+h[2]):0;show(s<0?0:s);
+</script></body></html>
